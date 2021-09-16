@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>核心包版本监控</title>
+    <style>
+        body {
+            color:#555;
+        }
+
+        #app {
+            width: 600px;
+            margin: 0 auto;
+        }
+        h2 {
+            font-weight: 400;
+            font-size: 20px;
+            line-height: 36px;
+            color: #222;
+            border-bottom: 1px #eee solid;
+        }
+
+        h2 span {
+            font-size: 14px;
+        }
+
+        .tablecss {
+            border-collapse: collapse;
+            border: none;
+            font-size: 14px;
+            width: 100%;
+            text-align: left;
+        }
+
+        .tablecss th, .tablecss td {
+            border-bottom: solid 1px #f4f4f4;
+        }
+
+        .tablecss tr:last-child td {
+            border-bottom: none;
+        }
+        .tablecss td {
+            padding: 8px 16px;
+        }
+
+        .tablecss th {
+            padding: 8px 10px;
+            border-bottom: 1px #ddd solid;
+        }
+
+        .tablecss th.right, .tablecss td.right {
+            text-align: right;
+        }
+        .tablecss td.red {
+            color: #c00;
+            font-weight: 700;
+        }
+
+    </style>
+    <script src="http://cdn.jsdelivr.net/npm/axios@0.21.4/dist/axios.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <h2>核心包版本监控页面 - <span style="color:#c00">防止重大性能或者bug更新没有及时发现!</span></h2>
+    <table class="tablecss">
+        <tr>
+            <th>名称</th>
+            <th class="right">使用版本</th>
+            <th class="right">最新版本</th>
+        </tr>
+        <tr v-for="item in watchList">
+            <template v-if="item.name==='divider'">
+                <td colspan="4" height="12"></td>
+            </template>
+            <template v-else>
+                <td>{{item.name}}</td>
+                <td class="right">{{item.version}}</td>
+                <td class="right" :class="item.update?'red':''">{{item.newVersion}}</td>
+            </template>
+        </tr>
+    </table>
+</div>
+</body>
+
+<script type="module">
+    import {createApp} from "http://cdn.jsdelivr.net/npm/vue@3.2.11/dist/vue.esm-browser.prod.js"
+
+    let cpvm = {
+        data() {
+            return {
+                watchList: [
+                    {
+                        name: 'vue',
+                        version: '3.2.10'
+                    },
+                    {
+                        name: 'vue-router',
+                        version: '4.0.11'
+                    },
+                    {
+                        name: 'vuex',
+                        version: '4.0.2'
+                    },
+                    {
+                        name: 'divider'
+                    },
+                    {
+                        name: 'dayjs',
+                        version: '1.10.4'
+                    },
+                    {
+                        name: 'axios',
+                        version: '0.21.4'
+                    }, {
+                        name: 'typescript',
+                        version: '4.3.5'
+                    },
+                    {
+                        name: 'naive-ui',
+                        version: '2.18.2'
+                    },
+                    {
+                        name: 'echarts',
+                        version: '5.2.0'
+                    },
+                    {
+                        name: 'divider'
+                    },
+                    {
+                        name: 'vite',
+                        version: '2.5.7'
+                    },
+                    {
+                        name: 'less',
+                        version: '4.1.1'
+                    },
+                    {
+                        name: 'divider'
+                    },
+                    {
+                        name: 'vitepress',
+                        version: '0.18.1'
+                    },
+                ]
+            }
+        },
+        methods: {
+            getLastedVersion() {
+                this.watchList.map(async item => {
+                    if (item.name !== 'divider') {
+                        axios.get(`http://data.jsdelivr.com/v1/package/npm/${item.name}`).then(
+                            res => {
+                                let tags = res.data.tags
+                                let version = tags.next ? tags.next : tags.latest
+                                // fix axios version next is less then latest
+                                if (['axios', 'typescript'].includes(item.name)) {
+                                    version = tags.latest
+                                }
+                                if (version !== item.version) {
+                                    item.update = true
+                                }
+                                item.newVersion = version
+                            })
+                    }
+                })
+            }
+
+        }
+
+    }
+    let vm = createApp(cpvm).mount('#app')
+    vm.getLastedVersion()
+</script>
+</html>
