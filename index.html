@@ -4,25 +4,37 @@
     <meta charset="UTF-8">
     <title>核心包版本监控</title>
     <style>
+
         body {
-            color:#555;
+            margin-top: 60px;
+            color: #555;
         }
 
         #app {
             width: 600px;
             margin: 0 auto;
         }
+
         h2 {
             font-weight: 400;
             font-size: 20px;
             line-height: 36px;
             color: #222;
-            border-bottom: 1px #eee solid;
+            border-bottom: 1px #f4f4f4 solid;
+            margin-bottom: 40px;
         }
 
         h2 span {
             font-size: 14px;
         }
+
+        h2 em {
+            padding-left: 60px;
+            font-style: normal;
+            font-size: 14px;
+            color: #090
+        }
+        a:link,a:visited,a:hover{color:#333;text-decoration: none;border-bottom: 1px #333 solid}
 
         .tablecss {
             border-collapse: collapse;
@@ -39,6 +51,7 @@
         .tablecss tr:last-child td {
             border-bottom: none;
         }
+
         .tablecss td {
             padding: 8px 16px;
         }
@@ -51,6 +64,7 @@
         .tablecss th.right, .tablecss td.right {
             text-align: right;
         }
+
         .tablecss td.red {
             color: #c00;
             font-weight: 700;
@@ -61,7 +75,7 @@
 </head>
 <body>
 <div id="app">
-    <h2>核心包版本监控页面 - <span style="color:#c00">防止重大性能或者bug更新没有及时发现!</span></h2>
+    <h2>核心包版本监控页面 <span style="color:#c00"> - 防止重大性能或者bug更新没有及时发现!</span><em>{{watchSize}}</em></h2>
     <table class="tablecss">
         <tr>
             <th>名称</th>
@@ -73,7 +87,7 @@
                 <td colspan="4" height="12"></td>
             </template>
             <template v-else>
-                <td>{{item.name}}</td>
+                <td><a :href="item.changelog" target="_blank">{{item.name}}</a></td>
                 <td class="right">{{item.version}}</td>
                 <td class="right" :class="item.update?'red':''">{{item.newVersion}}</td>
             </template>
@@ -91,14 +105,17 @@
                 watchList: [
                     {
                         name: 'vue',
+                        changelog:'https://github.com/vuejs/vue-next/blob/master/CHANGELOG.md',
                         version: '3.2.10'
                     },
                     {
                         name: 'vue-router',
+                        changelog: 'https://github.com/vuejs/vue-router-next/blob/master/CHANGELOG.md',
                         version: '4.0.11'
                     },
                     {
                         name: 'vuex',
+                        changelog: 'https://github.com/vuejs/vuex/releases',
                         version: '4.0.2'
                     },
                     {
@@ -106,21 +123,26 @@
                     },
                     {
                         name: 'dayjs',
+                        changelog: 'https://github.com/iamkun/dayjs/releases',
                         version: '1.10.4'
                     },
                     {
                         name: 'axios',
+                        changelog: 'https://github.com/axios/axios/releases',
                         version: '0.21.4'
                     }, {
                         name: 'typescript',
+                        changelog: 'https://github.com/microsoft/TypeScript/releases',
                         version: '4.3.5'
                     },
                     {
                         name: 'naive-ui',
+                        changelog: 'https://www.naiveui.com/',
                         version: '2.18.2'
                     },
                     {
                         name: 'echarts',
+                        changelog: 'https://echarts.apache.org/en/changelog.html',
                         version: '5.2.0'
                     },
                     {
@@ -128,10 +150,12 @@
                     },
                     {
                         name: 'vite',
+                        changelog: 'https://github.com/vitejs/vite/',
                         version: '2.5.7'
                     },
                     {
                         name: 'less',
+                        changelog: 'https://github.com/less/less.js/blob/master/CHANGELOG.md',
                         version: '4.1.1'
                     },
                     {
@@ -139,17 +163,25 @@
                     },
                     {
                         name: 'vitepress',
+                        changelog: 'https://github.com/vuejs/vitepress/releases',
                         version: '0.18.1'
                     },
-                ]
+                ],
+                progress: 0 // 查询进度
+            }
+        },
+        computed: {
+            watchSize() {
+                let size = this.watchList.filter(item => item.name !== 'divider').length
+                return `${this.progress} / ${size}`
             }
         },
         methods: {
             getLastedVersion() {
                 this.watchList.map(async item => {
                     if (item.name !== 'divider') {
-                        axios.get(`http://data.jsdelivr.com/v1/package/npm/${item.name}`).then(
-                            res => {
+                        axios.get(`https://data.jsdelivr.com/v1/package/npm/${item.name}`).then(res => {
+                                this.progress += 1
                                 let tags = res.data.tags
                                 let version = tags.next ? tags.next : tags.latest
                                 // fix axios version next is less then latest
@@ -160,13 +192,11 @@
                                     item.update = true
                                 }
                                 item.newVersion = version
-                            })
+                        })
                     }
                 })
             }
-
         }
-
     }
     let vm = createApp(cpvm).mount('#app')
     vm.getLastedVersion()
