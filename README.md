@@ -1,7 +1,7 @@
 # cpvm
 cpvm = core package version monitor
 
-###动机
+### 动机
 vue3 and vue3 ecosystem is update too fast now, watch the version of dev code.  
 可能不经常看都想不起来是不是要看看哪些包有重点更新，比如 echarts 都到 5 了
 
