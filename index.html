@@ -106,17 +106,17 @@
                     {
                         name: 'vue',
                         changelog:'https://github.com/vuejs/vue-next/blob/master/CHANGELOG.md',
-                        version: '3.2.20'
+                        version: '3.2.37'
                     },
                     {
                         name: 'vue-router',
                         changelog: 'https://github.com/vuejs/vue-router-next/blob/master/CHANGELOG.md',
-                        version: '4.0.12'
+                        version: '4.0.13'
                     },
                     {
-                        name: 'vuex',
-                        changelog: 'https://github.com/vuejs/vuex/releases',
-                        version: '4.0.2'
+                        name: 'pinia',
+                        changelog: 'https://github.com/vuejs/pinia/blob/v2/packages/pinia/CHANGELOG.md',
+                        version: '2.0.14'
                     },
                     {
                         name: 'divider'
@@ -124,26 +124,26 @@
                     {
                         name: 'dayjs',
                         changelog: 'https://github.com/iamkun/dayjs/releases',
-                        version: '1.10.7'
+                        version: '1.11.3'
                     },
                     {
                         name: 'axios',
                         changelog: 'https://github.com/axios/axios/releases',
-                        version: '0.24.0'
+                        version: '0.27.2'
                     }, {
                         name: 'typescript',
                         changelog: 'https://github.com/microsoft/TypeScript/releases',
-                        version: '4.4.4'
+                        version: '4.7.4'
                     },
                     {
-                        name: 'naive-ui',
-                        changelog: 'https://www.naiveui.com/',
-                        version: '2.19.11'
+                        name: 'ant-design-vue',
+                        changelog: 'https://next.antdv.com/docs/vue/changelog-cn/',
+                        version: '3.2.9'
                     },
                     {
                         name: 'echarts',
                         changelog: 'https://echarts.apache.org/en/changelog.html',
-                        version: '5.2.1'
+                        version: '5.3.3'
                     },
                     {
                         name: 'divider'
@@ -151,12 +151,12 @@
                     {
                         name: 'vite',
                         changelog: 'https://github.com/vitejs/vite/',
-                        version: '2.6.11'
+                        version: '2.9.13'
                     },
                     {
                         name: 'less',
                         changelog: 'https://github.com/less/less.js/blob/master/CHANGELOG.md',
-                        version: '4.1.2'
+                        version: '4.1.3'
                     },
                     {
                         name: 'divider'
@@ -164,7 +164,7 @@
                     {
                         name: 'vitepress',
                         changelog: 'https://github.com/vuejs/vitepress/releases',
-                        version: '0.20.0'
+                        version: '1.0.0-alpha.4'
                     },
                 ],
                 progress: 0 // 查询进度
@@ -185,7 +185,7 @@
                                 let tags = res.data.tags
                                 let version = tags.next ? tags.next : tags.latest
                                 // fix axios version next is less then latest
-                                if (['axios', 'typescript'].includes(item.name)) {
+                                if (['axios', 'typescript','vue','pinia','vitepress','ant-design-vue'].includes(item.name)) {
                                     version = tags.latest
                                 }
                                 if (version !== item.version) {
