@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>核心包版本监控</title>
     <style>
-
         body {
             margin-top: 60px;
             color: #555;
@@ -19,22 +18,26 @@
             font-weight: 400;
             font-size: 20px;
             line-height: 36px;
+            text-indent: 10px;
             color: #222;
-            border-bottom: 1px #f4f4f4 solid;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
-
         h2 span {
             font-size: 14px;
+            font-weight: 400;
         }
-
         h2 em {
             padding-left: 60px;
             font-style: normal;
             font-size: 14px;
             color: #090
         }
-        a:link,a:visited,a:hover{color:#333;text-decoration: none;border-bottom: 1px #333 solid}
+
+        a:link, a:visited, a:hover {
+            color: #555;
+            text-decoration: none;
+            border-bottom: 1px #999 solid
+        }
 
         .tablecss {
             border-collapse: collapse;
@@ -43,42 +46,34 @@
             width: 100%;
             text-align: left;
         }
-
-        .tablecss th, .tablecss td {
-            border-bottom: solid 1px #f4f4f4;
-        }
-
-        .tablecss tr:last-child td {
-            border-bottom: none;
-        }
-
-        .tablecss td {
-            padding: 8px 16px;
-        }
-
         .tablecss th {
-            padding: 8px 10px;
-            border-bottom: 1px #ddd solid;
+            padding: 6px 10px;
+            border-bottom: 1px #e2e2e2 solid;
+            font-weight: 400;
+            color: #000;
         }
-
         .tablecss th.right, .tablecss td.right {
             text-align: right;
         }
+        .tablecss td {
+            padding: 10px 16px;
+            border-bottom: solid 1px #f0f0f0;
+        }
 
-        .tablecss td.red {
+        .red {
             color: #c00;
             font-weight: 700;
         }
 
     </style>
-    <script src="http://cdn.jsdelivr.net/npm/axios@0.21.4/dist/axios.min.js"></script>
+
 </head>
 <body>
 <div id="app">
-    <h2>核心包版本监控页面 <span style="color:#c00"> - 防止重大性能或者bug更新没有及时发现!</span><em>{{watchSize}}</em></h2>
+    <h2>核心包版本监控 <span class="red" style="font-weight: 400"> - 防止重大性能或者bug更新没有及时发现!</span><em>{{watchSize}}</em></h2>
     <table class="tablecss">
         <tr>
-            <th>名称</th>
+            <th>名称 - click goto changelog</th>
             <th class="right">使用版本</th>
             <th class="right">最新版本</th>
         </tr>
@@ -95,9 +90,9 @@
     </table>
 </div>
 </body>
-
+<script src="//cdn.staticfile.org/axios/1.2.2/axios.min.js"></script>
 <script type="module">
-    import {createApp} from "http://cdn.jsdelivr.net/npm/vue@3.2.11/dist/vue.esm-browser.prod.js"
+    import {createApp} from "//cdn.staticfile.org/vue/3.2.45/vue.esm-browser.prod.min.js"
 
     let cpvm = {
         data() {
@@ -105,18 +100,18 @@
                 watchList: [
                     {
                         name: 'vue',
-                        changelog:'https://github.com/vuejs/vue-next/blob/master/CHANGELOG.md',
-                        version: '3.2.37'
+                        changelog: 'https://github.com/vuejs/vue-next/blob/master/CHANGELOG.md',
+                        version: '3.2.45'
                     },
                     {
                         name: 'vue-router',
                         changelog: 'https://github.com/vuejs/vue-router-next/blob/master/CHANGELOG.md',
-                        version: '4.0.13'
+                        version: '4.1.6'
                     },
                     {
                         name: 'pinia',
                         changelog: 'https://github.com/vuejs/pinia/blob/v2/packages/pinia/CHANGELOG.md',
-                        version: '2.0.14'
+                        version: '2.0.27'
                     },
                     {
                         name: 'divider'
@@ -124,26 +119,17 @@
                     {
                         name: 'dayjs',
                         changelog: 'https://github.com/iamkun/dayjs/releases',
-                        version: '1.11.3'
+                        version: '1.11.7'
                     },
                     {
                         name: 'axios',
                         changelog: 'https://github.com/axios/axios/releases',
-                        version: '0.27.2'
-                    }, {
-                        name: 'typescript',
-                        changelog: 'https://github.com/microsoft/TypeScript/releases',
-                        version: '4.7.4'
+                        version: '1.2.1'
                     },
                     {
                         name: 'ant-design-vue',
                         changelog: 'https://next.antdv.com/docs/vue/changelog-cn/',
-                        version: '3.2.9'
-                    },
-                    {
-                        name: 'echarts',
-                        changelog: 'https://echarts.apache.org/en/changelog.html',
-                        version: '5.3.3'
+                        version: '3.2.15'
                     },
                     {
                         name: 'divider'
@@ -151,7 +137,7 @@
                     {
                         name: 'vite',
                         changelog: 'https://github.com/vitejs/vite/',
-                        version: '3.0.9'
+                        version: '4.0.3'
                     },
                     {
                         name: 'less',
@@ -164,8 +150,18 @@
                     {
                         name: 'vitepress',
                         changelog: 'https://github.com/vuejs/vitepress/releases',
-                        version: '1.0.0-alpha.9'
+                        version: '1.0.0-alpha.33'
                     },
+                    {
+                        name: 'typescript',
+                        changelog: 'https://github.com/microsoft/TypeScript/releases',
+                        version: '4.9.4'
+                    },
+                    {
+                        name: 'echarts',
+                        changelog: 'https://echarts.apache.org/en/changelog.html',
+                        version: '5.4.1'
+                    }
                 ],
                 progress: 0 // 查询进度
             }
@@ -173,27 +169,27 @@
         computed: {
             watchSize() {
                 let size = this.watchList.filter(item => item.name !== 'divider').length
-                return `${this.progress} / ${size}`
+                return `${ this.progress } / ${ size }`
             }
         },
         methods: {
             getLastedVersion() {
-                this.watchList.map(async item => {
-                    if (item.name !== 'divider') {
-                        axios.get(`https://data.jsdelivr.com/v1/package/npm/${item.name}`).then(res => {
-                                this.progress += 1
-                                let tags = res.data.tags
-                                let version = tags.next ? tags.next : tags.latest
-                                // fix axios version next is less then latest
-                                if (['axios', 'typescript','vue','pinia','vitepress','ant-design-vue'].includes(item.name)) {
-                                    version = tags.latest
-                                }
-                                if (version !== item.version) {
-                                    item.update = true
-                                }
-                                item.newVersion = version
-                        })
-                    }
+                this.watchList.filter(item => item.name !== 'divider').map(async item => {
+
+                    axios.get(`https://data.jsdelivr.com/v1/package/npm/${ item.name }`).then(res => {
+                        this.progress += 1
+                        let tags = res.data.tags
+                        let version = tags.latest
+                        //fix axios version next is less then latest
+                        /*if (['axios', 'typescript', 'vue', 'vue-router', 'pinia', 'vitepress', 'ant-design-vue'].includes(item.name)) {
+                            version = tags.latest
+                        }*/
+                        if (version !== item.version) {
+                            item.update = true
+                        }
+                        item.newVersion = version
+                    })
+
                 })
             }
         }
