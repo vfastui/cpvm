@@ -88,6 +88,24 @@
             </template>
         </tr>
     </table>
+
+    <table class="tablecss" style="margin-top: 60px;">
+        <tr>
+            <th>名称 - click goto changelog</th>
+            <th class="right">使用版本</th>
+            <th class="right">最新版本</th>
+        </tr>
+        <tr v-for="item in versions">
+            <template v-if="item.name==='divider'">
+                <td colspan="4" height="12"></td>
+            </template>
+            <template v-else>
+                <td><a :href="item.changelog" target="_blank">{{item.name}}</a></td>
+                <td class="right">{{item.version}}</td>
+                <td class="right">{{item.newVersion}}</td>
+            </template>
+        </tr>
+    </table>
 </div>
 </body>
 <script src="https://fastly.jsdelivr.net/npm/axios@1.4.0/dist/axios.min.js"></script>
@@ -163,7 +181,8 @@
                         version: '5.4.3'
                     }
                 ],
-                progress: 0 // 查询进度
+                progress: 0,
+                versions:[]// 查询进度
             }
         },
         computed: {
@@ -191,10 +210,16 @@
                     })
 
                 })
+            },
+            getJarsVersion(){
+                axios.get(`https://airene.net/api/versions`).then(res => {
+                    this.versions = res.data.jars
+                })
             }
         }
     }
     let vm = createApp(cpvm).mount('#app')
     vm.getLastedVersion()
+    vm.getJarsVersion()
 </script>
 </html>
